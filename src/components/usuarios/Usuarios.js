@@ -1,16 +1,16 @@
 import React, {useState, useEffect } from 'react'
-import { obtenerTodosTipos, guardar, editarPorId, borrarPorId } from '../../services/TipoEquipoService';
-import TablaModulos from '../iu/TablaModulos';
-import DialogoAgregar from '../iu/DialogoAgregar';
+import { obtenerTodosUsuarios, guardar, editarPorId, borrarPorId, obtenerUsuariosActivos } from '../../services/UsuariosService';
 import DialogoEliminar from '../iu/DialogoEliminar';
 import Cargando from '../iu/Cargando';
+import TablaUsuarios from './TablaUsuarios';
+import DialogoAgregarUsuario from './DialogoAgregarUsuario';
 
-export default function TipoEquipo(params) {
+const Usuarios = (params) => {
 
-  const [tipos, setTipos] = useState(params.data);
-  const [tiposActivos, setTiposActivos] = useState([]);
+  const [usuarios, setUsuarios] = useState(params.data);
   const [estado, setEstado] = useState({
     _id: null,
+    email: '',
     name: '',
     estado: true
   })
@@ -23,34 +23,35 @@ export default function TipoEquipo(params) {
 
   useEffect( () => {
     if(soloActivos){
-      getTiposActivos()
+      getUsuariosActivos()
     }else{
-      getTipos()
-    }
-  },[tipos, soloActivos]);
+      getUsuarios();
+    }  
+  },[usuarios, soloActivos]);
 
-
-  const getTipos = () => {
-    if(tipos.length==0){
-      obtenerTodosTipos().then(r => {
-          setTipos(r.data)
+  const getUsuariosActivos = () => {
+    if(usuarios.length==0){
+      obtenerUsuariosActivos().then(r => {
+          setUsuarios(r.data)
         }).catch(e => {
             console.log(e)
         })
     }   
   };
 
-  const getTiposActivos = () => {
-    if(tipos.length==0){
-      setTipos(tiposActivos)
+  const getUsuarios = () => {
+    if(usuarios.length==0){
+      obtenerTodosUsuarios().then(r => {
+          setUsuarios(r.data)
+        }).catch(e => {
+            console.log(e)
+        })
     }   
   };
 
   function changeCheckBox(e){
-    const filter = tipos.filter(est => est.estado == true);
-    setTiposActivos(filter)
     let array=[]
-    setTipos(array)
+    setUsuarios(array)
     setSoloActivos(e.target.checked)
   }
 
@@ -67,7 +68,7 @@ export default function TipoEquipo(params) {
     if(estado._id){
       editar()
     }else{
-      setTimeout(guardarTipo, 500)  
+      setTimeout(guardarUsu, 500)  
     }
     resetEstado()
   }
@@ -76,8 +77,8 @@ export default function TipoEquipo(params) {
     editarPorId(estado._id, estado)
     .then(r => {
       let array=[]
-      setTipos(array)
-      getTipos()
+      setUsuarios(array)
+      getUsuarios()
       changeError(false)
       setLoading(false);
     }).catch(e => {
@@ -97,16 +98,16 @@ export default function TipoEquipo(params) {
     document.getElementById('botonDialogoEliminar').click()
     borrarPorId(idEliminar)
     let array=[]
-    setTipos(array)
-    getTipos()
+    setUsuarios(array)
+    getUsuarios()
  }
 
-  const guardarTipo = () => {
+  const guardarUsu = () => {
     guardar(estado)
     .then(r => {
       let array=[]
-      setTipos(array)
-      getTipos()
+      setUsuarios(array)
+      getUsuarios()
       document.getElementById('btnCloseModal').click()
       changeError(false);
       setLoading(false);
@@ -114,7 +115,10 @@ export default function TipoEquipo(params) {
       console.log(e);
       let error=e.response.data.msg
       if(error=='Ya existe'){
-        alert("Ya existe un tipo de equipo con este nombre!")
+        alert("Ya existe un usuario con este nombre!")
+      }
+      if(error=='Ya existe email'){
+        alert("Ya existe un usuario con este email!")
       }
       changeError(true);
       setLoading(false);
@@ -126,6 +130,7 @@ export default function TipoEquipo(params) {
     setEstado({
       _id: null,
       name: '',
+      email: '',
       estado: true
     })
   }
@@ -144,19 +149,18 @@ export default function TipoEquipo(params) {
     setLoading(true);
     setTimeout(() => {
     setLoading(false);
-      const filter = tipos.filter(est => est._id == id)[0];
+      const filter = usuarios.filter(est => est._id == id)[0];
       setEstado({
         ...filter
       });
     }, 500)
   }
 
-
-  if(tipos.length>0){
+ if(usuarios.length>0){
     return (
       <div className="container">
       <br/>
-      <h4 style={{textAlign: 'center'}}>Tipos de equipos</h4>
+      <h4 style={{textAlign: 'center'}}>Usuarios</h4>
       <button 
         type="button"
         className="btn btn-outline-primary"
@@ -167,15 +171,17 @@ export default function TipoEquipo(params) {
          Agregar
       </button>
       <br/>
-      <TablaModulos
-        datos={tipos}
+     
+      <TablaUsuarios
+        datos={usuarios}
         openEditById={openEditById}
         confirmarEliminar={confirmarEliminar}
         changeCheckBox={changeCheckBox}
         soloActivos={soloActivos}
       />
-      <DialogoAgregar
-      titulo='Nuevo tipo de equipo'
+      
+      <DialogoAgregarUsuario
+        titulo='Nuevo usuario'
         estado={estado}
         loading={loading}
         closeModal={closeModal}
@@ -184,8 +190,8 @@ export default function TipoEquipo(params) {
         error={error}
         add={add}
         display={display}
-       />
-  
+     />
+
       <button 
         type="button"
         id='botonDialogoEliminar'
@@ -196,7 +202,7 @@ export default function TipoEquipo(params) {
       </button>
       <DialogoEliminar
         borrar={borrar}
-        titulo={'el tipo de equipo'}
+        titulo={'el usuario'}
       />
     </div>
     )
@@ -205,5 +211,6 @@ export default function TipoEquipo(params) {
       <Cargando />
     )
    } 
-
 }
+
+export default Usuarios

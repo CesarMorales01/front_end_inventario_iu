@@ -2,18 +2,28 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 export default function BarraNav() {
+    function goInventario(){
+        document.getElementById('navInventarios').click()
+    }
+
   return (
     <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
-            <a className="navbar-brand" href="#">{process.env.REACT_APP_NAME}</a>
+            <a className="navbar-brand" style={{cursor: 'pointer'}} onClick={goInventario}>{process.env.REACT_APP_NAME}</a>
             <button style={{backgroundColor:'gray'}} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
                 <NavLink 
-                   className="nav-item nav-link"
+                   id='navInventarios' 
                    to='/'
+                >
+                </NavLink>
+                
+                <NavLink 
+                   className="nav-item nav-link"
+                   to='/estados'
                 >
                     Estados
                 </NavLink>
@@ -29,9 +39,12 @@ export default function BarraNav() {
                 >
                     Tipos Equipos
                 </NavLink>
-                <li className="nav-item">
-                    <a className="nav-link disabled">Disabled</a>
-                </li>
+                <NavLink 
+                   className="nav-item nav-link"
+                   to='/usuarios'
+                >
+                    Usuarios
+                </NavLink>
             </ul>
             </div>
         </div>
