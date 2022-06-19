@@ -50,7 +50,7 @@ const [file, setFile] = useState([]);
     setLoading(true);
     if(item._id){
       editarEstado();
-      subirPhoto()
+    //  subirPhoto()
     }else{
       guardarItem();
     }

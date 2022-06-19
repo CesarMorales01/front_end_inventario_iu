@@ -11,6 +11,7 @@ export const guardar = (inv) => {
 }
 
 export const editarPorId = (id, inv) => {
+    console.log("edit"+inv)
     return axiosConfig.put('/inventarios/'+id, inv);
 }
 
