@@ -53,7 +53,8 @@ const TablaInventario = (params) => {
 function buscarFoto(id, nombreFoto){
   let foto=photo
   if(nombreFoto!=''){
-    foto='http://localhost:9000/api/inventarios/'+id+'/image'
+    let baseUrl=process.env.REACT_APP_URL_IMG
+    foto=baseUrl+"/"+id+'/image'
   }
   return foto
 }

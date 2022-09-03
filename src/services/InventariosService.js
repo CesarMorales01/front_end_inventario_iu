@@ -11,7 +11,6 @@ export const guardar = (inv) => {
 }
 
 export const editarPorId = (id, inv) => {
-    console.log("edit"+inv)
     return axiosConfig.put('/inventarios/'+id, inv);
 }
 
@@ -20,13 +19,14 @@ export const borrarPorId=(id)=>{
 }
 
 export const subirFoto=(id, file)=>{
-
-    /*
+    const headers = {
+        'Content-Type':  "multipart/form-data"
+    }
     const data = new FormData();
-    data.append('name', 'foto');
+    data.append('name', 'foto')
     data.append('file', file);
-    */
-    console.log(file)
 
-    return axiosConfig.post('/inventarios/'+id+'/upload-image', file);
+    return axiosConfig.post('/inventarios/'+id+'/upload-image', data, {
+        headers: headers
+    });
 }

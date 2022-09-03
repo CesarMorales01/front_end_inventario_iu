@@ -96,10 +96,16 @@ export default function TipoEquipo(params) {
  function borrar(){
     document.getElementById('botonDialogoEliminar').click()
     borrarPorId(idEliminar)
+    recargarVista()
+ }
+
+ function recargarVista(){
+  setTimeout(()=>{
     let array=[]
     setTipos(array)
     getTipos()
- }
+  },500) 
+}
 
   const guardarTipo = () => {
     guardar(estado)

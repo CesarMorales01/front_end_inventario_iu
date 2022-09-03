@@ -96,10 +96,16 @@ export default function Marca(params) {
  function borrar(){
     document.getElementById('botonDialogoEliminar').click()
     borrarPorId(idEliminar)
+    recargarVista()
+ }
+
+ function recargarVista(){
+  setTimeout(()=>{
     let array=[]
     setMarcas(array)
     getMarcas()
- }
+  },500) 
+}
 
   const guardarMarca = () => {
     guardar(estado)

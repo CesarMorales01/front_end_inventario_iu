@@ -50,7 +50,13 @@ const [file, setFile] = useState([]);
     setLoading(true);
     if(item._id){
       editarEstado();
-    //  subirPhoto()
+      /*
+       subirPhoto().then(r => {
+        console.log(r)
+      }).catch(e => {
+          console.log(e)
+      })
+      */
     }else{
       guardarItem();
     }
@@ -58,6 +64,8 @@ const [file, setFile] = useState([]);
   }
 
   function subirPhoto (){
+    let user={}
+    const obj= URL.createObjectURL(file)
     subirFoto(item._id, file)
   }
 
@@ -125,10 +133,16 @@ const closeModal = () => {
  function borrar(){
     document.getElementById('botonDialogoEliminar').click()
     borrarPorId(idEliminar)
+   recargarVista()
+ }  
+
+ function recargarVista(){
+  setTimeout(()=>{
     let array=[]
     setInventarios(array)
     getInventarios()
- }  
+  },500) 
+}
 
  const openEditById = id => {
   setEditar(true)

@@ -24,7 +24,8 @@ const DialogoAgregarInventario = (params) => {
     function validarImagen(){
        let id=document.getElementById('inputId').value
        if(id!=''){
-            setPhoto('http://localhost:9000/api/inventarios/'+id+'/image')
+            let baseUrl=process.env.REACT_APP_URL_IMG
+            setPhoto(baseUrl+'/'+id+'/image')
        }else{
         setPhoto(logo)
        }

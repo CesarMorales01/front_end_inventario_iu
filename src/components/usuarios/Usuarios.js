@@ -97,9 +97,15 @@ const Usuarios = (params) => {
  function borrar(){
     document.getElementById('botonDialogoEliminar').click()
     borrarPorId(idEliminar)
-    let array=[]
-    setUsuarios(array)
-    getUsuarios()
+    recargarVista() 
+ }
+
+ function recargarVista(){
+    setTimeout(()=>{
+      let array=[]
+      setUsuarios(array)
+      getUsuarios()
+    },500) 
  }
 
   const guardarUsu = () => {

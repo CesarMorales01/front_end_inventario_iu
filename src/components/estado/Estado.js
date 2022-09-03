@@ -83,10 +83,16 @@ export default function Estado(params) {
  function borrar(){
     document.getElementById('botonDialogoEliminar').click()
     borrarPorId(idEliminar)
+    recargarVista()
+ }
+
+ function recargarVista(){
+  setTimeout(()=>{
     let array=[]
     setEstados(array)
     getEstados()
- }
+  },500) 
+}
 
  const openEditById = id => {
   setDisplay('')
